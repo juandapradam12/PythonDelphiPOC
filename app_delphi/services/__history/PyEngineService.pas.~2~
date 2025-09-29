@@ -1,0 +1,78 @@
+unit PyEngineService;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.IOUtils, Winapi.Windows,
+  PythonEngine, VarPyth;
+
+type
+  TPyEngineService = class(TDataModule)
+  private
+    FPython: TPythonEngine;
+    function ProjectRootFromExe: string;
+    procedure AddToSysPath(const Path: string);
+  public
+    procedure DataModuleCreate(Sender: TObject);
+    procedure EnsureReady;
+    property Python: TPythonEngine read FPython;
+  end;
+
+
+
+implementation
+
+{$R *.dfm}
+
+function TPyEngineService.ProjectRootFromExe: string;
+var
+  AppDir: string;
+begin
+  // EXE typically ends up in app_delphi\Win64\Debug
+  // This walks up 3 levels to reach the repo root
+  AppDir := TPath.GetDirectoryName(ParamStr(0));
+  Result := TDirectory.GetParent(
+              TDirectory.GetParent(
+                TDirectory.GetParent(AppDir)));
+end;
+
+procedure TPyEngineService.AddToSysPath(const Path: string);
+begin
+  GetPythonEngine.EvalString(
+    Format('import sys; p=r"%s"; ' +
+           'sys.path.insert(0, p) if p not in sys.path else None', [Path])
+  );
+end;
+
+procedure TPyEngineService.DataModuleCreate(Sender: TObject);
+var
+  RootDir, PyEmbed, PyApp: string;
+begin
+  RootDir := ProjectRootFromExe;
+  PyEmbed := TPath.Combine(RootDir, 'external_libraries\python-3.11.9-embed-amd64');
+  PyApp   := TPath.Combine(RootDir, 'app_py');
+
+  // Create Python engine at runtime
+  FPython := TPythonEngine.Create(Self);
+  FPython.UseLastKnownVersion := False;
+  FPython.DllName    := 'python311.dll';
+  FPython.PythonHome := PyEmbed;
+
+  // Ensure Windows can find python311.dll
+  SetDllDirectory(PChar(PyEmbed));
+
+  // Load Python DLL
+  FPython.LoadDll;
+
+  // Add your app_py folder to sys.path so Import('main') works
+  AddToSysPath(PyApp);
+end;
+
+procedure TPyEngineService.EnsureReady;
+begin
+  if (FPython <> nil) and not FPython.IsHandleValid then
+    FPython.LoadDll;
+end;
+
+end.
+
