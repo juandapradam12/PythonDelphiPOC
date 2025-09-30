@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.IOUtils, Winapi.Windows,
-  PythonEngine, VarPyth, Vcl.Dialogs;
+  PythonEngine, VarPyth;
 
 type
   TPyEngineService = class
@@ -28,26 +28,27 @@ implementation
 
 constructor TPyEngineService.Create;
 var
-  RootDir, PyEmbed, PyApp: string;
+  RootDir, PyEmbed, PyApp, DllPath: string;
 begin
   RootDir := ProjectRootFromExe;
   PyEmbed := TPath.Combine(RootDir, 'external_libraries\python-3.11.9-embed-amd64');
   PyApp   := TPath.Combine(RootDir, 'app_py');
+  DllPath := TPath.Combine(PyEmbed, 'python311.dll');
+
+  if not FileExists(DllPath) then
+    raise Exception.CreateFmt('Python DLL not found at: %s', [DllPath]);
 
   FPython := TPythonEngine.Create(nil);
   FPython.UseLastKnownVersion := False;
-  FPython.DllName    := 'python311.dll';
+  FPython.DllName := DllPath;        // full path
   FPython.PythonHome := PyEmbed;
 
-  SetDllDirectory(PChar(PyEmbed));
+  SetDllDirectory(PChar(PyEmbed));   // optional, but helps Windows locate DLL dependencies
 
-  if not FileExists(TPath.Combine(PyEmbed, FPython.DllName)) then
-    ShowMessage('DLL not found at: ' + TPath.Combine(PyEmbed, FPython.DllName))
-  else
-    ShowMessage('DLL exists at: ' + TPath.Combine(PyEmbed, FPython.DllName));
-
+  // Load Python DLL
   FPython.LoadDll;
 
+  // Add app_py to sys.path
   AddToSysPath(PyApp);
 end;
 
@@ -59,9 +60,11 @@ end;
 
 procedure TPyEngineService.AddToSysPath(const Path: string);
 begin
-  GetPythonEngine.EvalString(
-    Format('import sys; p=r"%s"; ' +
-           'sys.path.insert(0, p) if p not in sys.path else None', [Path])
+  //  Use os.path.normpath so spaces/accents don’t break
+  GetPythonEngine.ExecString(
+    'import sys, os' + sLineBreak +
+    'p = os.path.normpath(r"' + Path + '")' + sLineBreak +
+    'sys.path.insert(0, p) if p not in sys.path else None'
   );
 end;
 
@@ -69,6 +72,7 @@ function TPyEngineService.ProjectRootFromExe: string;
 var
   AppDir: string;
 begin
+  // exe is usually at: app_delphi\Win64\Debug\DelphiApp.exe
   AppDir := TPath.GetDirectoryName(ParamStr(0));
   Result := TDirectory.GetParent(TDirectory.GetParent(TDirectory.GetParent(AppDir)));
 end;
