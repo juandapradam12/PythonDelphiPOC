@@ -33,12 +33,29 @@ end;
 procedure TForm1.BtnRunClick(Sender: TObject);
 var
   PyMain, PyRes: Variant;
+  PathStr: string;
 begin
-  PyEngine.EnsureReady;
-  PyMain := Import('main');   // loads app_py\main.py
-  PyRes  := PyMain.main();    // calls main()
-  Memo1.Lines.Add('Python result: ' + VarToStr(PyRes));
+  if (Memo1.Lines.Count > 0) and (Trim(Memo1.Lines[0]) <> '') then
+    PathStr := Trim(Memo1.Lines[0])
+  else
+    PathStr := 'data/input/sample_points.txt';
+
+  try
+    PyEngine.EnsureReady;
+    PyMain := Import('main');           // load app_py/main.py
+    PyRes  := PyMain.main(PathStr);     // call ONLY main(path)
+    Memo1.Lines.Add('---');
+    Memo1.Lines.Add('Input path: ' + PathStr);
+    Memo1.Lines.Add(VarToStr(PyRes));
+  except
+    on E: Exception do
+    begin
+      Memo1.Lines.Add('---');
+      Memo1.Lines.Add('Delphi caught error: ' + E.ClassName + ': ' + E.Message);
+    end;
+  end;
 end;
+
 
 end.
 
