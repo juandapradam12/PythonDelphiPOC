@@ -14,6 +14,7 @@ This POC establishes a reusable bridge:
 
 ## 📂 Project Structure
 
+```text
 .
 ├── README.md
 ├── app_delphi
@@ -46,8 +47,9 @@ This POC establishes a reusable bridge:
     │   └── share
     │       └── man
     └── python4delphi
-
+```
 22 directories, 10 files
+
 
 ---
 
