@@ -14,26 +14,40 @@ This POC establishes a reusable bridge:
 
 ## 📂 Project Structure
 
-PythonDelphiPOC/
-│
-├─ app_delphi/ # Delphi application
-│ ├─ forms/MainForm.pas/.dfm # VCL form (UI: TMemo + Button)
-│ ├─ services/PyEngineService.pas # Python engine bootstrap (pure unit, no DFM)
-│ └─ DelphiApp.dproj/.dpr # Delphi project files
-│
-├─ app_py/ # Python application code
-│ ├─ main.py # Python entrypoint (called from Delphi)
-│ └─ requirements.txt # numpy, pandas, scikit-learn, matplotlib, seaborn
-│
-├─ data/
-│ └─ input/sample_points.txt # Example CSV/TXT dataset
-│
-├─ external_libraries/
-│ ├─ python-3.11.9-embed-amd64/ # Python embeddable runtime
-│ └─ python4delphi/ # P4D (submodule)
-│
-└─ README.md
+.
+├── README.md
+├── app_delphi
+│   ├── DelphiApp.dpr
+│   ├── DelphiApp.dproj
+│   ├── Win64
+│   │   ├── Debug
+│   │   └── Release
+│   ├── __history
+│   ├── forms
+│   │   ├── MainForm.pas
+│   │   └── __history
+│   └── services
+│       ├── PyEngineService.pas
+│       └── __history
+├── app_py
+│   ├── main.py
+│   └── requirements.txt
+├── data
+│   └── input
+├── documents
+│   └── commands.txt
+└── external_libraries
+    ├── python-3.11.9-embed-amd64
+    │   ├── LICENSE.txt
+    │   ├── Lib
+    │   │   └── site-packages
+    │   ├── Scripts
+    │   ├── get-pip.py
+    │   └── share
+    │       └── man
+    └── python4delphi
 
+22 directories, 10 files
 ---
 
 ## 🚀 Quick Start
