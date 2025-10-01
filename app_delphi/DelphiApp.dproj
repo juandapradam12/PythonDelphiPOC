@@ -89,7 +89,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <DCC_UnitSearchPath>C:\Users\SKG Tecnología\Documents\PythonDelphiPOC\external_libraries\python4delphi\Source;C:\Users\SKG Tecnología\Documents\PythonDelphiPOC\external_libraries\python4delphi\Packages;C:\Users\SKG Tecnología\Documents\PythonDelphiPOC\external_libraries\python4delphi\Modules;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>C:\PythonDelphiPOC\external_libraries\python4delphi\Modules;C:\PythonDelphiPOC\external_libraries\python4delphi\Packages;C:\PythonDelphiPOC\external_libraries\python4delphi\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -110,6 +110,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
