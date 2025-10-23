@@ -1,0 +1,98 @@
+# Compiled source #
+###################
+*.dcu
+*.obj
+*.exe
+*.dll
+*.bpl
+*.bpi
+*.dcp
+*.rsm
+*.stat
+*.map
+*.o
+*.ppu
+*.rsj
+*.compiled
+*.lib
+*.pyd
+
+# Generated source #
+###################
+*.hpp
+
+# Backup files    #
+###################
+*.~*
+*.bak
+
+# IDE Files	  #
+###################
+*.dproj.local
+*.groupproj.local
+*.identcache
+*.dsk
+*.tvsconfig
+*.otares
+*.drc
+*.rc
+*.res
+*.local
+
+# Output Folders  #
+###################
+/Win32
+/Win64
+/OSX32
+/__history
+*.bak
+*.Patch
+*.#00
+*.pch
+
+# Python cache files #
+######################
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments #
+########################
+venv/
+env/
+ENV/
+
+# IDE and editor files #
+########################
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
